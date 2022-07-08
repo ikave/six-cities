@@ -1,4 +1,4 @@
-const Card = () => (
+const Card = (): JSX.Element => (
   <article className="cities__card place-card">
     <div className="place-card__mark">
       <span>Premium</span>
