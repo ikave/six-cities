@@ -1,11 +1,11 @@
 import MainPage from '../../pages/main-page/main-page';
 
-type AppProps = {
-  counts: number;
+type PropsType = {
+  numberOfRentalOffers: number;
 };
 
-function App({ counts }: AppProps): JSX.Element {
-  return <MainPage counts={counts} />;
+function App({ numberOfRentalOffers }: PropsType) {
+  return <MainPage numberOfRentalOffers={numberOfRentalOffers} />;
 }
 
 export default App;

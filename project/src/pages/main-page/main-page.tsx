@@ -1,11 +1,11 @@
 import Card from '../../components/card/card';
 import Header from '../../components/header/header';
 
-type MainPageProps = {
-  counts: number;
+type PropsType = {
+  numberOfRentalOffers: number;
 };
 
-const MainPage = ({ counts }: MainPageProps): JSX.Element => (
+const MainPage = ({ numberOfRentalOffers }: PropsType) => (
   <div className="page page--gray page--main">
     <Header />
     <main className="page__main page__main--index">
@@ -54,7 +54,7 @@ const MainPage = ({ counts }: MainPageProps): JSX.Element => (
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
             <b className="places__found">
-              {counts} places to stay in Amsterdam
+              {numberOfRentalOffers} places to stay in Amsterdam
             </b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>

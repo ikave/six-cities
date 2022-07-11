@@ -1,6 +1,6 @@
 import Header from '../../components/header/header';
 
-const RoomPage = (): JSX.Element => (
+const RoomPage = () => (
   <div className="page">
     <Header />
 

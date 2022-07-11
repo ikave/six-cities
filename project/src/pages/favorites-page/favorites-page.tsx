@@ -1,7 +1,7 @@
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 
-const FavoritesPage = (): JSX.Element => (
+const FavoritesPage = () => (
   <div className="page">
     <Header />
 
