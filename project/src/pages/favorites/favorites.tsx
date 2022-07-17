@@ -1,7 +1,7 @@
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 
-const FavoritesPage = () => (
+const Favorites = () => (
   <div className="page">
     <Header />
 
@@ -183,4 +183,4 @@ const FavoritesPage = () => (
   </div>
 );
 
-export default FavoritesPage;
+export default Favorites;

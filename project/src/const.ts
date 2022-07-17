@@ -1,11 +1,1 @@
-export enum AppRoute {
-  Root = '/',
-  Login = '/login',
-  Favorites = '/favorites',
-  Room = '/offer/:id',
-}
-
-export enum AuthStatus {
-  Auth = 'AUTH',
-  NoAuth = 'NO_AUTH',
-}
+export const NUMBER_OF_RENTAL_OFFERS = 312;

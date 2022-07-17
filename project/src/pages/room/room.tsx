@@ -1,6 +1,6 @@
 import Header from '../../components/header/header';
 
-const RoomPage = () => (
+const Room = () => (
   <div className="page">
     <Header />
 
@@ -437,4 +437,4 @@ const RoomPage = () => (
   </div>
 );
 
-export default RoomPage;
+export default Room;

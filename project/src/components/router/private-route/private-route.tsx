@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { AppRoute, AuthStatus } from '../../const';
+import { AppRoute, AuthStatus } from '../enums';
 
 type PropsType = {
   authStatus: AuthStatus;

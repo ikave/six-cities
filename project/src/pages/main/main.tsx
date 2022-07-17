@@ -5,7 +5,7 @@ type PropsType = {
   numberOfRentalOffers: number;
 };
 
-const MainPage = ({ numberOfRentalOffers }: PropsType) => (
+const Main = ({ numberOfRentalOffers }: PropsType) => (
   <div className="page page--gray page--main">
     <Header />
     <main className="page__main page__main--index">
@@ -99,4 +99,4 @@ const MainPage = ({ numberOfRentalOffers }: PropsType) => (
   </div>
 );
 
-export default MainPage;
+export default Main;
