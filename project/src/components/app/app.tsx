@@ -1,11 +1,7 @@
-import MainPage from '../../pages/main-page/main-page';
+import Router from '../router/router';
 
-type PropsType = {
-  numberOfRentalOffers: number;
-};
-
-function App({ numberOfRentalOffers }: PropsType) {
-  return <MainPage numberOfRentalOffers={numberOfRentalOffers} />;
+function App() {
+  return <Router />;
 }
 
 export default App;

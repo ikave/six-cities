@@ -1,4 +1,4 @@
-const LoginPage = () => (
+const Login = () => (
   <div className="page page--gray page--login">
     <header className="header">
       <div className="container">
@@ -60,4 +60,4 @@ const LoginPage = () => (
   </div>
 );
 
-export default LoginPage;
+export default Login;
