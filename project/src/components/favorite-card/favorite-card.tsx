@@ -1,49 +1,46 @@
-import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter, convertRatingToWidth } from '../../helpers';
 import { OfferType } from '../../types';
 
 type PropsType = {
   offer: OfferType;
-  onMouseOver: (offer: OfferType) => void;
 };
 
-const Card = ({ offer, onMouseOver }: PropsType) => {
+const FavoriteCard = ({ offer }: PropsType) => {
   const type = capitalizeFirstLetter(offer.type);
   const ratingWidth = convertRatingToWidth(offer.rating);
 
-  const mouseOverHandler = () => {
-    onMouseOver(offer);
-  };
-
   return (
-    <article className='cities__card place-card' onMouseOver={mouseOverHandler}>
+    <article className='favorites__card place-card'>
       {offer.isPremium && (
         <div className='place-card__mark'>
           <span>Premium</span>
         </div>
       )}
-
-      <div className='cities__image-wrapper place-card__image-wrapper'>
-        <Link to={`/offer/${offer.id}`}>
+      <div className='favorites__image-wrapper place-card__image-wrapper'>
+        <a href='#1'>
           <img className='place-card__image' src={offer.previewImage} width='260' height='200' alt='' />
-        </Link>
+        </a>
       </div>
-      <div className='place-card__info'>
+      <div className='favorites__card-info place-card__info'>
         <div className='place-card__price-wrapper'>
           <div className='place-card__price'>
             <b className='place-card__price-value'>&euro;{offer.price}</b>
-            <span className='place-card__price-text'>&#47;&nbsp;night</span>
+            <span className='place-card__price-text'>
+              &#47;&nbsp;night
+            </span>
           </div>
           <button
-            className={`place-card__bookmark-button button${
-              offer.isFavorite ? ' place-card__bookmark-button--active' : ''
-            }`}
+            className='place-card__bookmark-button place-card__bookmark-button--active button'
             type='button'
           >
-            <svg className='place-card__bookmark-icon' width='18' height='19'>
+            <svg
+              className='place-card__bookmark-icon'
+              width='18'
+              height='19'
+            >
               <use xlinkHref='#icon-bookmark'></use>
             </svg>
-            <span className='visually-hidden'>To bookmarks</span>
+            <span className='visually-hidden'>In bookmarks</span>
           </button>
         </div>
         <div className='place-card__rating rating'>
@@ -53,7 +50,7 @@ const Card = ({ offer, onMouseOver }: PropsType) => {
           </div>
         </div>
         <h2 className='place-card__name'>
-          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
+          <a href='#1'>{offer.title}</a>
         </h2>
         <p className='place-card__type'>{type}</p>
       </div>
@@ -61,4 +58,4 @@ const Card = ({ offer, onMouseOver }: PropsType) => {
   );
 };
 
-export default Card;
+export default FavoriteCard;
