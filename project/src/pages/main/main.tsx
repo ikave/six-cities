@@ -1,11 +1,13 @@
-import Card from '../../components/card/card';
 import Header from '../../components/header/header';
+import OfferList from '../../components/offer-list/offer-list';
+import { OfferType } from '../../types';
 
 type PropsType = {
   numberOfRentalOffers: number;
+  offersList: OfferType[];
 };
 
-const Main = ({ numberOfRentalOffers }: PropsType) => (
+const Main = ({ numberOfRentalOffers, offersList }: PropsType) => (
   <div className="page page--gray page--main">
     <Header />
     <main className="page__main page__main--index">
@@ -29,10 +31,7 @@ const Main = ({ numberOfRentalOffers }: PropsType) => (
               </a>
             </li>
             <li className="locations__item">
-              <a
-                className="locations__item-link tabs__item tabs__item--active"
-                href="#1"
-              >
+              <a className="locations__item-link tabs__item tabs__item--active" href="#1">
                 <span>Amsterdam</span>
               </a>
             </li>
@@ -53,9 +52,7 @@ const Main = ({ numberOfRentalOffers }: PropsType) => (
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">
-              {numberOfRentalOffers} places to stay in Amsterdam
-            </b>
+            <b className="places__found">{numberOfRentalOffers} places to stay in Amsterdam</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex={0}>
@@ -64,11 +61,8 @@ const Main = ({ numberOfRentalOffers }: PropsType) => (
                   <use xlinkHref="#icon-arrow-select"></use>
                 </svg>
               </span>
-              <ul className="places__options places__options--custom places__options--opened">
-                <li
-                  className="places__option places__option--active"
-                  tabIndex={0}
-                >
+              <ul className="places__options places__options--custom">
+                <li className="places__option places__option--active" tabIndex={0}>
                   Popular
                 </li>
                 <li className="places__option" tabIndex={0}>
@@ -82,13 +76,7 @@ const Main = ({ numberOfRentalOffers }: PropsType) => (
                 </li>
               </ul>
             </form>
-            <div className="cities__places-list places__list tabs__content">
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </div>
+            <OfferList offersList={offersList} />
           </section>
           <div className="cities__right-section">
             <section className="cities__map map"></section>
