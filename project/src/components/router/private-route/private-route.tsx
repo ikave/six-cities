@@ -7,6 +7,6 @@ type PropsType = {
 };
 
 const PrivateRoute = ({ authStatus, children }: PropsType) =>
-  authStatus === AuthStatus.Auth ? children : <Navigate to={AppRoute.Login} />;
+  authStatus === AuthStatus.NoAuth ? children : <Navigate to={AppRoute.Login} />;
 
 export default PrivateRoute;
