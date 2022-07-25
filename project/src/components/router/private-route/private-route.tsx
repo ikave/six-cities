@@ -6,7 +6,9 @@ type PropsType = {
   children: JSX.Element;
 };
 
-const PrivateRoute = ({ authStatus, children }: PropsType) =>
-  authStatus === AuthStatus.NoAuth ? children : <Navigate to={AppRoute.Login} />;
-
-export default PrivateRoute;
+export const PrivateRoute = ({ authStatus, children }: PropsType) =>
+  authStatus === AuthStatus.NoAuth ? (
+    children
+  ) : (
+    <Navigate to={AppRoute.Login} />
+  );

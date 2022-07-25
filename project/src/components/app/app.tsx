@@ -1,5 +1,5 @@
 import { OfferType } from '../../types';
-import Router from '../router/router';
+import { Router } from '../router';
 
 type PropsType = {
   offersList: OfferType[];

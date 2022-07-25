@@ -4,39 +4,57 @@ import { OfferType } from '../../types';
 
 type PropsType = {
   offer: OfferType;
-  onMouseOver: (offer: OfferType) => void;
+  onMouseOver: (id: number) => void;
 };
 
-const Card = ({ offer, onMouseOver }: PropsType) => {
-  const type = capitalizeFirstLetter(offer.type);
-  const ratingWidth = convertRatingToWidth(offer.rating);
+const OfferCard = ({
+  offer: {
+    type,
+    rating,
+    isPremium,
+    isFavorite,
+    id,
+    price,
+    title,
+    previewImage,
+  },
+  onMouseOver,
+}: PropsType) => {
+  const offerType = capitalizeFirstLetter(type);
+  const ratingWidth = convertRatingToWidth(rating);
 
   const mouseOverHandler = () => {
-    onMouseOver(offer);
+    onMouseOver(id);
   };
 
   return (
     <article className='cities__card place-card' onMouseOver={mouseOverHandler}>
-      {offer.isPremium && (
+      {isPremium && (
         <div className='place-card__mark'>
           <span>Premium</span>
         </div>
       )}
 
       <div className='cities__image-wrapper place-card__image-wrapper'>
-        <Link to={`/offer/${offer.id}`}>
-          <img className='place-card__image' src={offer.previewImage} width='260' height='200' alt='' />
+        <Link to={`/offer/${id}`}>
+          <img
+            className='place-card__image'
+            src={previewImage}
+            width='260'
+            height='200'
+            alt=''
+          />
         </Link>
       </div>
       <div className='place-card__info'>
         <div className='place-card__price-wrapper'>
           <div className='place-card__price'>
-            <b className='place-card__price-value'>&euro;{offer.price}</b>
+            <b className='place-card__price-value'>&euro;{price}</b>
             <span className='place-card__price-text'>&#47;&nbsp;night</span>
           </div>
           <button
             className={`place-card__bookmark-button button${
-              offer.isFavorite ? ' place-card__bookmark-button--active' : ''
+              isFavorite ? ' place-card__bookmark-button--active' : ''
             }`}
             type='button'
           >
@@ -53,12 +71,12 @@ const Card = ({ offer, onMouseOver }: PropsType) => {
           </div>
         </div>
         <h2 className='place-card__name'>
-          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className='place-card__type'>{type}</p>
+        <p className='place-card__type'>{offerType}</p>
       </div>
     </article>
   );
 };
 
-export default Card;
+export default OfferCard;
