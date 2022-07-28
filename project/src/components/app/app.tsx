@@ -1,7 +1,12 @@
-import Router from '../router/router';
+import { OfferType } from '../../types';
+import { Router } from '../router';
 
-function App() {
-  return <Router />;
+type PropsType = {
+  offersList: OfferType[];
+};
+
+function App({ offersList }: PropsType) {
+  return <Router offersList={offersList} />;
 }
 
 export default App;

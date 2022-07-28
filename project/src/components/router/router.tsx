@@ -1,21 +1,31 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { NUMBER_OF_RENTAL_OFFERS } from '../../const';
+import { NUMBER_OF_RENTAL_OFFERS } from '../../constants';
 
-import Favorites from '../../pages/favorites/favorites';
-import Login from '../../pages/login/login';
-import Main from '../../pages/main/main';
-import NotFound from '../../pages/not-found/not-found';
-import Room from '../../pages/room/room';
-import PrivateRoute from './private-route/private-route';
+import { Favorites } from '../../pages/favorites';
+import { Login } from '../../pages/login';
+import { Main } from '../../pages/main';
+import { NotFound } from '../../pages/not-found';
+import { Room } from '../../pages/room';
+import { PrivateRoute } from './private-route';
 import { AppRoute, AuthStatus } from './enums';
+import { OfferType } from '../../types';
 
-const Router = () => (
+type PropsType = {
+  offersList: OfferType[];
+};
+
+export const Router = ({ offersList }: PropsType) => (
   <BrowserRouter>
     <Routes>
       <Route
         path={AppRoute.Root}
-        element={<Main numberOfRentalOffers={NUMBER_OF_RENTAL_OFFERS} />}
+        element={
+          <Main
+            numberOfRentalOffers={NUMBER_OF_RENTAL_OFFERS}
+            offersList={offersList}
+          />
+        }
       />
       <Route path={AppRoute.Login} element={<Login />} />
       <Route
@@ -27,9 +37,7 @@ const Router = () => (
         }
       />
       <Route path={AppRoute.Room} element={<Room />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   </BrowserRouter>
 );
-
-export default Router;
