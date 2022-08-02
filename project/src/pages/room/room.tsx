@@ -180,6 +180,7 @@ export const Room = () => {
               offersList={nearby}
               cardClasses={CARD_CLASSES.near}
               activeCardId={activeCardId}
+              onMouseOver={setActiveCardId}
             />
           </section>
         </div>
