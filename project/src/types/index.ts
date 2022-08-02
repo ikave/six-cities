@@ -49,3 +49,8 @@ export type ReviewType = {
   rating: number;
   user: UserType;
 };
+
+export type CardClassType = {
+  card: string;
+  imageWrapper: string;
+};
