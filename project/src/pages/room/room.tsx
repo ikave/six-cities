@@ -3,14 +3,16 @@ import { Header } from '../../components/header';
 import { Map } from '../../components/map';
 import { ReviewList } from '../../components/review-list';
 import { reviews } from '../../mocks/reviews';
-import { offers } from '../../mocks/offers';
 import { nearby } from '../../mocks/nearby';
 import { OfferList } from '../../components/offer-list';
 import { CARD_CLASSES } from '../../constants';
 import { useState } from 'react';
+import { useAppSelector } from '../../hooks';
 
 export const Room = () => {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
+
+  const offers = useAppSelector((state) => state.offersByCurrentCity);
 
   const offer = offers[2];
   return (
@@ -163,8 +165,8 @@ export const Room = () => {
           </div>
           <section className='property__map map'>
             <Map
-              offersList={nearby}
               currentOffer={offer}
+              offers={offers}
               activeCardId={activeCardId}
               setActiveCardId={setActiveCardId}
             />
@@ -180,7 +182,7 @@ export const Room = () => {
               offersList={nearby}
               cardClasses={CARD_CLASSES.near}
               activeCardId={activeCardId}
-              onMouseOver={setActiveCardId}
+              setActiveCardId={setActiveCardId}
             />
           </section>
         </div>

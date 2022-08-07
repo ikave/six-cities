@@ -1,12 +1,14 @@
-import { OfferType } from '../../types';
 import { Router } from '../router';
+import { useAppDispatch } from '../../hooks';
+import { getAllOffers } from '../../store/action';
+import { offers } from '../../mocks/offers';
 
-type PropsType = {
-  offersList: OfferType[];
-};
+function App() {
+  const dispatch = useAppDispatch();
 
-function App({ offersList }: PropsType) {
-  return <Router offersList={offersList} />;
+  dispatch(getAllOffers({ offers }));
+
+  return <Router />;
 }
 
 export default App;

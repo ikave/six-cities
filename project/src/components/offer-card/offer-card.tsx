@@ -4,13 +4,18 @@ import { CardClassType, OfferType } from '../../types';
 
 type PropsType = {
   offer: OfferType;
-  onMouseOver?: (id: number) => void;
+  setActiveCardId?: (id: number | null) => void;
   classes?: CardClassType;
   activeCardId?: number | null;
 };
 
 const OfferCard = ({
-  offer: {
+  offer,
+  setActiveCardId,
+  classes,
+  activeCardId,
+}: PropsType) => {
+  const {
     type,
     rating,
     isPremium,
@@ -19,17 +24,19 @@ const OfferCard = ({
     price,
     title,
     previewImage,
-  },
-  onMouseOver,
-  classes,
-  activeCardId,
-}: PropsType) => {
+  } = offer;
   const offerType = capitalizeFirstLetter(type);
   const ratingWidth = convertRatingToWidth(rating);
 
-  const mouseOverHandler = () => {
-    if (onMouseOver) {
-      onMouseOver(id);
+  const mouseEnterHandler = () => {
+    if (setActiveCardId) {
+      setActiveCardId(id);
+    }
+  };
+
+  const mouseLeaveHandler = () => {
+    if (setActiveCardId) {
+      setActiveCardId(null);
     }
   };
 
@@ -48,7 +55,8 @@ const OfferCard = ({
     <article
       className={`place-card ${classes ? classes?.card : ''}`}
       style={cardHoverStyle()}
-      onMouseOver={mouseOverHandler}
+      onMouseEnter={mouseEnterHandler}
+      onMouseLeave={mouseLeaveHandler}
     >
       {isPremium && (
         <div className='place-card__mark'>

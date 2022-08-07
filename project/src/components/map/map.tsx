@@ -6,20 +6,32 @@ import { OfferType } from '../../types';
 
 type PropsType = {
   activeCardId?: number | null;
-  offersList: OfferType[];
+  offers: OfferType[];
   currentOffer?: OfferType;
-  setActiveCardId: (id: number) => void;
+  setActiveCardId: (id: number | null) => void;
 };
 
 export const Map = ({
   activeCardId,
-  offersList,
+  offers,
   currentOffer,
   setActiveCardId,
 }: PropsType) => {
-  const defaultCityLocation = offersList[0].city.location;
   const mapRef = useRef(null);
-  const map = useMap(mapRef, defaultCityLocation);
+  const markersRef = useRef<Marker[]>([]);
+  /* Параметры  */
+  const map = useMap(mapRef, {
+    latitude: 52.370216,
+    longitude: 4.895168,
+    zoom: 10,
+  });
+
+  useEffect(() => {
+    if (markersRef.current.length) {
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
+    }
+  }, [offers]);
 
   useEffect(() => {
     if (map) {
@@ -31,19 +43,27 @@ export const Map = ({
           fillColor: '#4481c3',
         }).addTo(map);
       }
-      offersList.forEach(({ location, id }) => {
+    }
+  }, [map, currentOffer]);
+
+  useEffect(() => {
+    if (map) {
+      offers.forEach(({ location, id }) => {
         const marker = new Marker({
           lat: location.latitude,
           lng: location.longitude,
         });
 
+        markersRef.current.push(marker);
+
         marker
           .setIcon(id === activeCardId ? currentCustomIcon : defaultCustomIcon)
           .addTo(map)
-          .on('mouseover', () => setActiveCardId(id));
+          .on('mouseover', () => setActiveCardId(id))
+          .on('mouseout', () => setActiveCardId(null));
       });
     }
-  }, [map, activeCardId, offersList, currentOffer, setActiveCardId]);
+  }, [activeCardId, map, offers, setActiveCardId]);
 
   return <div style={{ height: '100%', width: '100%' }} ref={mapRef}></div>;
 };

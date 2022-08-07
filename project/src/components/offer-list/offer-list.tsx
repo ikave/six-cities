@@ -3,7 +3,7 @@ import { OfferCard } from '../offer-card';
 
 type PropsType = {
   offersList: OfferType[];
-  onMouseOver?: (id: number) => void;
+  setActiveCardId?: (id: number | null) => void;
   className?: string;
   activeCardId?: number | null;
   cardClasses?: {
@@ -14,7 +14,7 @@ type PropsType = {
 
 const OfferList = ({
   offersList,
-  onMouseOver,
+  setActiveCardId,
   className,
   cardClasses,
   activeCardId,
@@ -24,7 +24,7 @@ const OfferList = ({
       <OfferCard
         key={offer.id}
         offer={offer}
-        onMouseOver={onMouseOver}
+        setActiveCardId={setActiveCardId}
         classes={cardClasses}
         activeCardId={activeCardId}
       />
