@@ -3,13 +3,31 @@ import { OfferCard } from '../offer-card';
 
 type PropsType = {
   offersList: OfferType[];
-  onMouseOver: (id: number) => void;
+  onMouseOver?: (id: number) => void;
+  className?: string;
+  activeCardId?: number | null;
+  cardClasses?: {
+    card: string;
+    imageWrapper: string;
+  };
 };
 
-const OfferList = ({ offersList, onMouseOver }: PropsType) => (
-  <div className='cities__places-list places__list tabs__content'>
+const OfferList = ({
+  offersList,
+  onMouseOver,
+  className,
+  cardClasses,
+  activeCardId,
+}: PropsType) => (
+  <div className={`places__list ${className ? className : ''}`}>
     {offersList.map((offer) => (
-      <OfferCard key={offer.id} offer={offer} onMouseOver={onMouseOver} />
+      <OfferCard
+        key={offer.id}
+        offer={offer}
+        onMouseOver={onMouseOver}
+        classes={cardClasses}
+        activeCardId={activeCardId}
+      />
     ))}
   </div>
 );

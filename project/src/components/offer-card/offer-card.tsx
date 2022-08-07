@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter, convertRatingToWidth } from '../../helpers';
-import { OfferType } from '../../types';
+import { CardClassType, OfferType } from '../../types';
 
 type PropsType = {
   offer: OfferType;
-  onMouseOver: (id: number) => void;
+  onMouseOver?: (id: number) => void;
+  classes?: CardClassType;
+  activeCardId?: number | null;
 };
 
 const OfferCard = ({
@@ -19,23 +21,46 @@ const OfferCard = ({
     previewImage,
   },
   onMouseOver,
+  classes,
+  activeCardId,
 }: PropsType) => {
   const offerType = capitalizeFirstLetter(type);
   const ratingWidth = convertRatingToWidth(rating);
 
   const mouseOverHandler = () => {
-    onMouseOver(id);
+    if (onMouseOver) {
+      onMouseOver(id);
+    }
+  };
+
+  const cardHoverStyle = () => {
+    let style = null;
+    if (activeCardId === id) {
+      style = { opacity: 0.6 };
+    } else {
+      style = { opacity: 1 };
+    }
+
+    return style;
   };
 
   return (
-    <article className='cities__card place-card' onMouseOver={mouseOverHandler}>
+    <article
+      className={`place-card ${classes ? classes?.card : ''}`}
+      style={cardHoverStyle()}
+      onMouseOver={mouseOverHandler}
+    >
       {isPremium && (
         <div className='place-card__mark'>
           <span>Premium</span>
         </div>
       )}
 
-      <div className='cities__image-wrapper place-card__image-wrapper'>
+      <div
+        className={`place-card__image-wrapper ${
+          classes ? classes?.imageWrapper : ''
+        }`}
+      >
         <Link to={`/offer/${id}`}>
           <img
             className='place-card__image'

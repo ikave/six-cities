@@ -3,6 +3,7 @@ import { OfferList } from '../../components/offer-list';
 import { OfferType } from '../../types';
 import { Map } from '../../components/map';
 import { useState } from 'react';
+import { CARD_CLASSES } from '../../constants';
 
 type PropsType = {
   numberOfRentalOffers: number;
@@ -90,13 +91,20 @@ export const Main = ({ numberOfRentalOffers, offersList }: PropsType) => {
                 </ul>
               </form>
               <OfferList
+                className='cities__places-list'
                 offersList={offersList}
                 onMouseOver={setActiveCardId}
+                cardClasses={CARD_CLASSES.cities}
+                activeCardId={activeCardId}
               />
             </section>
             <div className='cities__right-section'>
               <section className='cities__map map'>
-                <Map activeCardId={activeCardId} offersList={offersList} />
+                <Map
+                  activeCardId={activeCardId}
+                  offersList={offersList}
+                  setActiveCardId={setActiveCardId}
+                />
               </section>
             </div>
           </div>

@@ -1,33 +1,36 @@
-import { Icon, Marker } from 'leaflet';
+import L, { Marker } from 'leaflet';
 import { useEffect, useRef } from 'react';
-import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../constants';
+import { defaultCustomIcon, currentCustomIcon } from './const';
 import useMap from '../../hooks/useMap';
 import { OfferType } from '../../types';
 
 type PropsType = {
-  activeCardId: number | null;
+  activeCardId?: number | null;
   offersList: OfferType[];
+  currentOffer?: OfferType;
+  setActiveCardId: (id: number) => void;
 };
 
-const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
-const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
-export const Map = ({ activeCardId, offersList }: PropsType) => {
+export const Map = ({
+  activeCardId,
+  offersList,
+  currentOffer,
+  setActiveCardId,
+}: PropsType) => {
   const defaultCityLocation = offersList[0].city.location;
   const mapRef = useRef(null);
   const map = useMap(mapRef, defaultCityLocation);
 
   useEffect(() => {
     if (map) {
+      if (currentOffer) {
+        const { location } = currentOffer;
+        L.circle([location.latitude, location.longitude], {
+          radius: 500,
+          fillOpacity: 0.5,
+          fillColor: '#4481c3',
+        }).addTo(map);
+      }
       offersList.forEach(({ location, id }) => {
         const marker = new Marker({
           lat: location.latitude,
@@ -36,10 +39,11 @@ export const Map = ({ activeCardId, offersList }: PropsType) => {
 
         marker
           .setIcon(id === activeCardId ? currentCustomIcon : defaultCustomIcon)
-          .addTo(map);
+          .addTo(map)
+          .on('mouseover', () => setActiveCardId(id));
       });
     }
-  }, [map, activeCardId, offersList]);
+  }, [map, activeCardId, offersList, currentOffer, setActiveCardId]);
 
   return <div style={{ height: '100%', width: '100%' }} ref={mapRef}></div>;
 };
