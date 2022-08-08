@@ -29,3 +29,9 @@ export const cities = [
   Cities.Hamburg,
   Cities.Dusseldorf,
 ] as const;
+
+export const MAP_CIRLCE_OPTIONS = {
+  radius: 500,
+  fillOpacity: 0.5,
+  fillColor: '#4481c3',
+};
