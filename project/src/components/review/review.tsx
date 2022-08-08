@@ -5,10 +5,14 @@ type PropsType = {
   review: ReviewType;
 };
 
-export const Review = ({ review }: PropsType) => {
-  const { rating, user, comment, date } = review;
-  const { avatarUrl, name } = user;
-
+export const Review = ({
+  review: {
+    rating,
+    user: { avatarUrl, name },
+    comment,
+    date,
+  },
+}: PropsType) => {
   const ratingWidth = convertRatingToWidth(rating);
   const newDate = new Date(date);
   const commentDate = newDate.toLocaleString('en', {

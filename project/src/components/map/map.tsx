@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { defaultCustomIcon, currentCustomIcon } from './const';
 import useMap from '../../hooks/useMap';
 import { OfferType } from '../../types';
+import { MAP_CIRLCE_OPTIONS } from '../../constants';
 
 type PropsType = {
   activeCardId?: number | null;
@@ -37,11 +38,10 @@ export const Map = ({
     if (map) {
       if (currentOffer) {
         const { location } = currentOffer;
-        L.circle([location.latitude, location.longitude], {
-          radius: 500,
-          fillOpacity: 0.5,
-          fillColor: '#4481c3',
-        }).addTo(map);
+        L.circle(
+          [location.latitude, location.longitude],
+          MAP_CIRLCE_OPTIONS
+        ).addTo(map);
       }
     }
   }, [map, currentOffer]);
