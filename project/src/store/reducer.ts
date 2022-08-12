@@ -5,6 +5,8 @@ import {
   getAllOffers,
   getOffersByCity,
   sortOffers,
+  loadOffers,
+  loadingStatus,
 } from './action';
 import { Cities, SortType } from '../constants';
 import { OfferType } from '../types';
@@ -15,6 +17,7 @@ type StateProps = {
   offersByCurrentCity: OfferType[];
   sortType: SortType;
   sortedOffers: OfferType[];
+  isLoading: boolean;
 };
 
 const initialState: StateProps = {
@@ -23,6 +26,7 @@ const initialState: StateProps = {
   offersByCurrentCity: [],
   sortType: SortType.Popular,
   sortedOffers: [],
+  isLoading: true,
 };
 
 const sortOptionsByType = (offers: OfferType[], type: SortType) => {
@@ -79,5 +83,11 @@ export const reducer = createReducer(initialState, (builder) => {
         state.offersByCurrentCity,
         state.sortType
       );
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(loadingStatus, (state, action) => {
+      state.isLoading = action.payload;
     });
 });
