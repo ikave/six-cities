@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { AuthStatus } from '../components/router/enums';
 import { Cities, SortType } from '../constants';
 import { OfferType } from '../types';
 
@@ -15,3 +16,4 @@ export const sortOffers = createAction('sortOffers');
 export const loadOffers = createAction<OfferType[]>('loadOffers');
 
 export const loadingStatus = createAction<boolean>('loadingStatus');
+export const changeAuthStatus = createAction<AuthStatus>('changeAuthStatus');

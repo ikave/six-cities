@@ -7,9 +7,11 @@ import {
   sortOffers,
   loadOffers,
   loadingStatus,
+  changeAuthStatus,
 } from './action';
 import { Cities, SortType } from '../constants';
 import { OfferType } from '../types';
+import { AuthStatus } from '../components/router/enums';
 
 type StateProps = {
   currentCity: Cities;
@@ -18,6 +20,7 @@ type StateProps = {
   sortType: SortType;
   sortedOffers: OfferType[];
   isLoading: boolean;
+  authorizationStatus: AuthStatus;
 };
 
 const initialState: StateProps = {
@@ -27,6 +30,7 @@ const initialState: StateProps = {
   sortType: SortType.Popular,
   sortedOffers: [],
   isLoading: true,
+  authorizationStatus: AuthStatus.NoAuth,
 };
 
 const sortOptionsByType = (offers: OfferType[], type: SortType) => {
@@ -89,5 +93,8 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadingStatus, (state, action) => {
       state.isLoading = action.payload;
+    })
+    .addCase(changeAuthStatus, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
