@@ -1,5 +1,13 @@
-export const URL_MARKER_DEFAULT = './img/pin.svg';
-export const URL_MARKER_CURRENT = './img/pin-active.svg';
+export const MarkerUrL = {
+  Default: './img/pin.svg',
+  Current: './img/pin-active.svg',
+} as const;
+
+export enum NameSpace {
+  App = 'App',
+  Data = 'Data',
+  User = 'User',
+}
 
 export const ERROR_SHOW_TIMEOUT = 2000;
 
@@ -14,7 +22,7 @@ export const CARD_CLASSES = {
   },
 };
 
-export enum Cities {
+export enum City {
   Paris = 'Paris',
   Cologne = 'Cologne',
   Brussels = 'Brussels',
@@ -23,13 +31,13 @@ export enum Cities {
   Dusseldorf = 'Dusseldorf',
 }
 
-export const cities = [
-  Cities.Paris,
-  Cities.Cologne,
-  Cities.Brussels,
-  Cities.Amsterdam,
-  Cities.Hamburg,
-  Cities.Dusseldorf,
+export const Cities = [
+  City.Paris,
+  City.Cologne,
+  City.Brussels,
+  City.Amsterdam,
+  City.Hamburg,
+  City.Dusseldorf,
 ] as const;
 
 export enum SortType {
