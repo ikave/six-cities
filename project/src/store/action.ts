@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { AuthStatus } from '../components/router/enums';
+import { AppRoute, AuthStatus } from '../components/router/enums';
 import { Cities, SortType } from '../constants';
-import { OfferType } from '../types';
+import { OfferType, ReviewType } from '../types';
 
 export const changeCurrentCity = createAction<{ currentCity: Cities }>(
   'changeCity'
@@ -17,3 +17,11 @@ export const loadOffers = createAction<OfferType[]>('loadOffers');
 
 export const loadingStatus = createAction<boolean>('loadingStatus');
 export const changeAuthStatus = createAction<AuthStatus>('changeAuthStatus');
+export const loadOffer = createAction<OfferType>('loadOffer');
+export const loadComments = createAction<ReviewType[]>('loadComments');
+export const loadNearby = createAction<OfferType[]>('loadNearby');
+
+export const setSityLocation = createAction('setSityLocation');
+
+export const setError = createAction<string | null>('setError');
+export const redirectToRoute = createAction<AppRoute>('redirectToRoute');

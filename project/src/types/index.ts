@@ -4,6 +4,14 @@ export type LocationType = {
   zoom: number;
 };
 
+export type LocationTypeForMap = {
+  center: {
+    lat: number;
+    lng: number;
+  };
+  zoom: number;
+};
+
 export type CityType = {
   location: LocationType;
   name: string;
@@ -58,4 +66,8 @@ export type CardClassType = {
 export type LoginData = {
   email: string;
   password: string;
+};
+
+export type OfferId = {
+  id: number;
 };

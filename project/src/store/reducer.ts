@@ -8,9 +8,13 @@ import {
   loadOffers,
   loadingStatus,
   changeAuthStatus,
+  loadOffer,
+  loadComments,
+  loadNearby,
+  setSityLocation,
 } from './action';
 import { Cities, SortType } from '../constants';
-import { OfferType } from '../types';
+import { LocationType, OfferType, ReviewType } from '../types';
 import { AuthStatus } from '../components/router/enums';
 
 type StateProps = {
@@ -21,6 +25,11 @@ type StateProps = {
   sortedOffers: OfferType[];
   isLoading: boolean;
   authorizationStatus: AuthStatus;
+  currentOffer: OfferType | undefined;
+  currentOfferComments: ReviewType[] | null;
+  nearbyOffers: OfferType[];
+  error: string | null;
+  cityLocation: LocationType | null;
 };
 
 const initialState: StateProps = {
@@ -31,6 +40,11 @@ const initialState: StateProps = {
   sortedOffers: [],
   isLoading: true,
   authorizationStatus: AuthStatus.NoAuth,
+  currentOffer: undefined,
+  currentOfferComments: null,
+  nearbyOffers: [],
+  error: null,
+  cityLocation: null,
 };
 
 const sortOptionsByType = (offers: OfferType[], type: SortType) => {
@@ -96,5 +110,19 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeAuthStatus, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(loadOffer, (state, action) => {
+      state.currentOffer = action.payload;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.currentOfferComments = action.payload;
+    })
+    .addCase(loadNearby, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
+    .addCase(setSityLocation, (state) => {
+      // eslint-disable-next-line no-console
+      console.log(state.offersByCurrentCity[0].city);
+      state.cityLocation = state.offersByCurrentCity[0].city.location;
     });
 });

@@ -1,4 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { setError } from '../store/action';
+import { clearErrorAction } from '../store/api-actions';
 import { getToken } from './token';
 
 const BACKEND_URL = 'https://10.react.pages.academy/six-cities';
@@ -19,6 +21,17 @@ export const createApi = (): AxiosInstance => {
 
     return config;
   });
+
+  api.interceptors.response.use(
+    (responce) => responce,
+    (error: AxiosError) => {
+      if (error.response) {
+        setError(error.response.data.error);
+        clearErrorAction();
+      }
+      throw error;
+    }
+  );
 
   return api;
 };

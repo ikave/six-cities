@@ -2,19 +2,36 @@ import { AddCommentForm } from '../../components/add-comment-form';
 import { Header } from '../../components/header';
 import { Map } from '../../components/map';
 import { ReviewList } from '../../components/review-list';
-import { reviews } from '../../mocks/reviews';
-import { nearby } from '../../mocks/nearby';
 import { OfferList } from '../../components/offer-list';
 import { CARD_CLASSES } from '../../constants';
-import { useState } from 'react';
-import { useAppSelector } from '../../hooks';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useParams } from 'react-router-dom';
+import {
+  fetchOfferAction,
+  fetchOfferCommentsAction,
+  fetchOfferNearbyAction,
+} from '../../store/api-actions';
+import { AuthStatus } from '../../components/router/enums';
+import { convertRatingToWidth } from '../../helpers';
 
 export const Room = () => {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
 
-  const offers = useAppSelector((state) => state.offersByCurrentCity);
+  const offer = useAppSelector((state) => state.currentOffer);
+  const reviews = useAppSelector((state) => state.currentOfferComments);
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const nearby = useAppSelector((state) => state.nearbyOffers);
+  const activeCity = useAppSelector((state) => state.currentCity);
 
-  const offer = offers[2];
+  useEffect(() => {
+    dispatch(fetchOfferAction(Number(id)));
+    dispatch(fetchOfferCommentsAction(Number(id)));
+    dispatch(fetchOfferNearbyAction(Number(id)));
+  }, [dispatch, id]);
+
   return (
     <div className='page'>
       <Header />
@@ -23,55 +40,24 @@ export const Room = () => {
         <section className='property'>
           <div className='property__gallery-container container'>
             <div className='property__gallery'>
-              <div className='property__image-wrapper'>
-                <img className='property__image' src='img/room.jpg' alt='' />
-              </div>
-              <div className='property__image-wrapper'>
-                <img
-                  className='property__image'
-                  src='img/apartment-01.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='property__image-wrapper'>
-                <img
-                  className='property__image'
-                  src='img/apartment-02.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='property__image-wrapper'>
-                <img
-                  className='property__image'
-                  src='img/apartment-03.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='property__image-wrapper'>
-                <img
-                  className='property__image'
-                  src='img/studio-01.jpg'
-                  alt=''
-                />
-              </div>
-              <div className='property__image-wrapper'>
-                <img
-                  className='property__image'
-                  src='img/apartment-01.jpg'
-                  alt=''
-                />
-              </div>
+              {offer &&
+                offer.images.slice(0, 6).map((image) => (
+                  <div className='property__image-wrapper' key={image}>
+                    <img className='property__image' src={image} alt='' />
+                  </div>
+                ))}
             </div>
           </div>
           <div className='property__container container'>
             <div className='property__wrapper'>
-              <div className='property__mark'>
-                <span>Premium</span>
-              </div>
+              {offer?.isPremium && (
+                <div className='property__mark'>
+                  <span>Premium</span>
+                </div>
+              )}
+
               <div className='property__name-wrapper'>
-                <h1 className='property__name'>
-                  Beautiful &amp; luxurious studio at great location
-                </h1>
+                <h1 className='property__name'>{offer?.title}</h1>
                 <button
                   className='property__bookmark-button button'
                   type='button'
@@ -88,41 +74,40 @@ export const Room = () => {
               </div>
               <div className='property__rating rating'>
                 <div className='property__stars rating__stars'>
-                  <span style={{ width: '80%' }}></span>
+                  <span
+                    style={{
+                      width: offer ? convertRatingToWidth(offer.rating) : '80%',
+                    }}
+                  />
                   <span className='visually-hidden'>Rating</span>
                 </div>
                 <span className='property__rating-value rating__value'>
-                  4.8
+                  {offer?.rating}
                 </span>
               </div>
               <ul className='property__features'>
                 <li className='property__feature property__feature--entire'>
-                  Apartment
+                  {offer?.type}
                 </li>
                 <li className='property__feature property__feature--bedrooms'>
-                  3 Bedrooms
+                  {offer?.bedrooms} Bedrooms
                 </li>
                 <li className='property__feature property__feature--adults'>
-                  Max 4 adults
+                  Max {offer?.maxAdults} adults
                 </li>
               </ul>
               <div className='property__price'>
-                <b className='property__price-value'>&euro;120</b>
+                <b className='property__price-value'>&euro;{offer?.price}</b>
                 <span className='property__price-text'>&nbsp;night</span>
               </div>
               <div className='property__inside'>
                 <h2 className='property__inside-title'>What&apos;s inside</h2>
                 <ul className='property__inside-list'>
-                  <li className='property__inside-item'>Wi-Fi</li>
-                  <li className='property__inside-item'>Washing machine</li>
-                  <li className='property__inside-item'>Towels</li>
-                  <li className='property__inside-item'>Heating</li>
-                  <li className='property__inside-item'>Coffee machine</li>
-                  <li className='property__inside-item'>Baby seat</li>
-                  <li className='property__inside-item'>Kitchen</li>
-                  <li className='property__inside-item'>Dishwasher</li>
-                  <li className='property__inside-item'>Cabel TV</li>
-                  <li className='property__inside-item'>Fridge</li>
+                  {offer?.goods.map((good) => (
+                    <li key={good} className='property__inside-item'>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className='property__host'>
@@ -131,44 +116,42 @@ export const Room = () => {
                   <div className='property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper'>
                     <img
                       className='property__avatar user__avatar'
-                      src='img/avatar-angelina.jpg'
+                      src={offer?.host.avatarUrl}
                       width='74'
                       height='74'
                       alt='Host avatar'
                     />
                   </div>
-                  <span className='property__user-name'>Angelina</span>
-                  <span className='property__user-status'>Pro</span>
+                  <span className='property__user-name'>
+                    {offer?.host.name}
+                  </span>
+                  <span className='property__user-status'>
+                    {offer?.host.isPro}
+                  </span>
                 </div>
                 <div className='property__description'>
-                  <p className='property__text'>
-                    A quiet cozy and picturesque that hides behind a a river by
-                    the unique lightness of Amsterdam. The building is green and
-                    from 18th century.
-                  </p>
-                  <p className='property__text'>
-                    An independent House, strategically located between Rembrand
-                    Square and National Opera, but where the bustle of the city
-                    comes to rest in this alley flowery and colorful.
-                  </p>
+                  <p className='property__text'>{offer?.description}</p>
                 </div>
               </div>
               <section className='property__reviews reviews'>
                 <h2 className='reviews__title'>
                   Reviews &middot;{' '}
-                  <span className='reviews__amount'>{reviews.length}</span>
+                  <span className='reviews__amount'>
+                    {reviews ? reviews.length : 0}
+                  </span>
                 </h2>
                 <ReviewList reviews={reviews} />
-                <AddCommentForm />
+                {authStatus === AuthStatus.Auth && <AddCommentForm />}
               </section>
             </div>
           </div>
           <section className='property__map map'>
             <Map
               currentOffer={offer}
-              offers={offers}
+              offers={nearby}
               activeCardId={activeCardId}
               setActiveCardId={setActiveCardId}
+              activeCity={activeCity}
             />
           </section>
         </section>

@@ -18,6 +18,7 @@ export const Main = () => {
   const currentCity = useAppSelector((state) => state.currentCity);
   const sortType = useAppSelector((state) => state.sortType);
   const isLoading = useAppSelector((state) => state.isLoading);
+  const activeCity = useAppSelector((state) => state.currentCity);
 
   const sortClickHandler = () => {
     setSortActive(!sortActive);
@@ -78,6 +79,7 @@ export const Main = () => {
                   offers={offers}
                   activeCardId={activeCardId}
                   setActiveCardId={setActiveCardId}
+                  activeCity={activeCity}
                 />
               </section>
             </div>

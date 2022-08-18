@@ -1,6 +1,8 @@
 export const URL_MARKER_DEFAULT = './img/pin.svg';
 export const URL_MARKER_CURRENT = './img/pin-active.svg';
 
+export const ERROR_SHOW_TIMEOUT = 2000;
+
 export const CARD_CLASSES = {
   cities: {
     card: 'cities__card',
