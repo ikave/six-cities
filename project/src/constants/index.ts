@@ -36,3 +36,9 @@ export enum SortType {
   PriceHighToLow = 'Price: high to low',
   TopRatedFirst = 'Top rated first',
 }
+
+export const MAP_CIRLCE_OPTIONS = {
+  radius: 500,
+  fillOpacity: 0.5,
+  fillColor: '#4481c3',
+};
