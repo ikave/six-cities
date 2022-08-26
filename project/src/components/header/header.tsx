@@ -1,12 +1,17 @@
-import { MouseEvent } from 'react';
+import { memo, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
+import { getFavoriteOffers } from '../../store/app-data/selectors';
+import { getAuthStatus, getUser } from '../../store/user-data/selectors';
 import { AuthStatus } from '../router/enums';
 
 const Header = () => {
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
   const dispatch = useAppDispatch();
+
+  const authStatus = useAppSelector(getAuthStatus);
+  const favorites = useAppSelector(getFavoriteOffers);
+  const user = useAppSelector(getUser);
 
   const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
@@ -42,9 +47,11 @@ const Header = () => {
                     >
                       <div className='header__avatar-wrapper user__avatar-wrapper'></div>
                       <span className='header__user-name user__name'>
-                        Oliver.conner@gmail.com
+                        {user?.email}
                       </span>
-                      <span className='header__favorite-count'>3</span>
+                      <span className='header__favorite-count'>
+                        {favorites.length}
+                      </span>
                     </Link>
                   </li>
                   <li className='header__nav-item'>
@@ -75,4 +82,4 @@ const Header = () => {
     </header>
   );
 };
-export default Header;
+export default memo(Header);

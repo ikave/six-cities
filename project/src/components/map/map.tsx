@@ -1,56 +1,37 @@
-import L, { Marker } from 'leaflet';
+import { Marker } from 'leaflet';
+import cn from 'classnames';
 import { useEffect, useRef } from 'react';
 import { defaultCustomIcon, currentCustomIcon } from './const';
 import useMap from '../../hooks/useMap';
 import { LocationType, OfferType } from '../../types';
-import { Cities } from '../../constants';
+import { City } from '../../constants';
 import useMapLocation from '../../hooks/useMapLocation';
 
 type PropsType = {
   activeCardId?: number | null;
   offers: OfferType[];
-  currentOffer?: OfferType;
-  activeCity: Cities;
-  setActiveCardId: (id: number | null) => void;
+  currentOffer: OfferType | null;
+  activeCity: City;
+  cityLocation: LocationType;
+  className?: string;
 };
-
-const getCityLocation = (
-  activeCity: Cities,
-  offers: OfferType[]
-): LocationType => ({
-  latitude: 5.2331231,
-  longitude: 2.1312323,
-  zoom: 13,
-});
-// if (offers) {
-//   const [offer] = offers;
-
-//   return {
-//     latitude: offer.city.location.latitude,
-//     longitude: offer.city.location.longitude,
-//     zoom: offer.city.location.zoom,
-//   };
-// }
 
 export const Map = ({
   activeCardId,
   offers,
   currentOffer,
   activeCity,
-  setActiveCardId,
+  cityLocation,
+  className,
 }: PropsType) => {
   const mapRef = useRef(null);
   const markersRef = useRef<Marker[]>([]);
 
-  const cityLocation = getCityLocation(activeCity, offers);
+  const prevCityRef = useRef<City>(City.Paris);
 
-  const prevCityRef = useRef<Cities>(Cities.Paris);
+  const map = useMap(mapRef, cityLocation);
 
-  const map = useMap(mapRef, {
-    latitude: 52.370216,
-    longitude: 4.895168,
-    zoom: 10,
-  });
+  const mapClasses = cn('map', className);
 
   useMapLocation(prevCityRef, activeCity, cityLocation, map);
 
@@ -65,11 +46,14 @@ export const Map = ({
     if (map) {
       if (currentOffer) {
         const { location } = currentOffer;
-        L.circle([location.latitude, location.longitude], {
-          radius: 500,
-          fillOpacity: 0.5,
-          fillColor: '#4481c3',
-        }).addTo(map);
+        const marker = new Marker({
+          lat: location.latitude,
+          lng: location.longitude,
+        });
+
+        map.setView({ lat: location.latitude, lng: location.longitude }, 13);
+
+        marker.setIcon(currentCustomIcon).addTo(map);
       }
     }
   }, [map, currentOffer]);
@@ -89,12 +73,14 @@ export const Map = ({
             .setIcon(
               id === activeCardId ? currentCustomIcon : defaultCustomIcon
             )
-            .addTo(map)
-            .on('mouseover', () => setActiveCardId(id))
-            .on('mouseout', () => setActiveCardId(null));
+            .addTo(map);
         });
     }
-  }, [activeCardId, map, offers, setActiveCardId]);
+  }, [activeCardId, map, offers]);
 
-  return <div style={{ height: '100%', width: '100%' }} ref={mapRef}></div>;
+  return (
+    <section className={mapClasses}>
+      <div style={{ height: '100%', width: '100%' }} ref={mapRef}></div>
+    </section>
+  );
 };

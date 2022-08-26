@@ -6,15 +6,13 @@ type PropsType = {
 };
 
 const getCityNames = (list: OfferType[]) => {
-  const cities: string[] = [];
+  const cities = new Set<string>();
 
   list.forEach(({ city: { name } }) => {
-    if (!cities.includes(name)) {
-      cities.push(name);
-    }
+    cities.add(name);
   });
 
-  return cities;
+  return Array.from(cities);
 };
 
 export const FavoriteOfferList = ({ favorites }: PropsType) => {
