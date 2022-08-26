@@ -11,3 +11,7 @@ export const changeSortType = createAction<{ sortType: SortType }>(
   'changeSortType'
 );
 export const sortOffers = createAction('sortOffers');
+
+export const loadOffers = createAction<OfferType[]>('loadOffers');
+
+export const loadingStatus = createAction<boolean>('loadingStatus');

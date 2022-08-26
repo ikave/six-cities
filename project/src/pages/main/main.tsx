@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CityList } from '../../components/city-list';
 import { getOffersByCity, sortOffers } from '../../store/action';
 import { SortOptions } from '../../components/sort-options';
+import Spinner from '../../components/spinner';
 
 export const Main = () => {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
@@ -16,6 +17,7 @@ export const Main = () => {
   const offers = useAppSelector((state) => state.sortedOffers);
   const currentCity = useAppSelector((state) => state.currentCity);
   const sortType = useAppSelector((state) => state.sortType);
+  const isLoading = useAppSelector((state) => state.isLoading);
 
   const sortClickHandler = () => {
     setSortActive(!sortActive);
@@ -58,13 +60,17 @@ export const Main = () => {
                   setSortActive={setSortActive}
                 />
               </form>
-              <OfferList
-                className='cities__places-list'
-                offersList={offers}
-                setActiveCardId={setActiveCardId}
-                cardClasses={CARD_CLASSES.cities}
-                activeCardId={activeCardId}
-              />
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <OfferList
+                  className='cities__places-list'
+                  offersList={offers}
+                  setActiveCardId={setActiveCardId}
+                  cardClasses={CARD_CLASSES.cities}
+                  activeCardId={activeCardId}
+                />
+              )}
             </section>
             <div className='cities__right-section'>
               <section className='cities__map map'>
