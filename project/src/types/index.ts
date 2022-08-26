@@ -48,6 +48,8 @@ export type UserType = {
   id: number;
   isPro: boolean;
   name: string;
+  email: string;
+  token: string;
 };
 
 export type ReviewType = {

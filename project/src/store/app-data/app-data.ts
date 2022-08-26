@@ -14,7 +14,6 @@ import {
 const initialState: AppData = {
   offers: [],
   isLoadingData: false,
-  error: null,
   currentOffer: null,
   reviews: [],
   nearby: [],
