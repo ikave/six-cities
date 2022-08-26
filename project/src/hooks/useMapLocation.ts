@@ -1,18 +1,18 @@
 import { Map } from 'leaflet';
 import { MutableRefObject, useEffect } from 'react';
-import { Cities } from '../constants';
+import { City } from '../constants';
 import { LocationType } from '../types';
 
 const useMapLocation = (
-  prevCityRef: MutableRefObject<Cities>,
-  activeCity: Cities,
+  prevCityRef: MutableRefObject<City>,
+  activeCity: City,
   cityLocation: LocationType,
   map: Map | null
 ): void => {
   useEffect(() => {
-    if (prevCityRef.current !== activeCity && map) {
-      prevCityRef.current = activeCity;
+    prevCityRef.current = activeCity;
 
+    if (map) {
       map.setView(
         {
           lat: cityLocation.latitude,
