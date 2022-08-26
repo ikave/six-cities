@@ -6,7 +6,7 @@ import { Main } from '../../pages/main';
 import { NotFound } from '../../pages/not-found';
 import { Room } from '../../pages/room';
 import { PrivateRoute } from './private-route';
-import { AppRoute, AuthStatus } from './enums';
+import { AppRoute } from './enums';
 
 export const Router = () => (
   <BrowserRouter>
@@ -16,7 +16,7 @@ export const Router = () => (
       <Route
         path={AppRoute.Favorites}
         element={
-          <PrivateRoute authStatus={AuthStatus.NoAuth}>
+          <PrivateRoute>
             <Favorites />
           </PrivateRoute>
         }

@@ -54,3 +54,8 @@ export type CardClassType = {
   card: string;
   imageWrapper: string;
 };
+
+export type LoginData = {
+  email: string;
+  password: string;
+};
