@@ -1,14 +1,14 @@
 import { Icon } from 'leaflet';
-import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../constants';
+import { MarkerUrL } from '../../constants';
 
 export const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
+  iconUrl: MarkerUrL.Default,
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 export const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
+  iconUrl: MarkerUrL.Current,
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });

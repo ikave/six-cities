@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { OfferType } from '../../types';
 import { FavoriteOfferCard } from '../favorite-offer-card';
 
@@ -20,13 +22,21 @@ const getFavoriteFromCity = ({
 export const FavoriteOfferItem = ({ cityName, favorites }: PropsType) => {
   const favoriteList = getFavoriteFromCity({ cityName, favorites });
 
+  const handleCityClick = (evt: MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
+  };
+
   return (
     <li className='favorites__locations-items'>
       <div className='favorites__locations locations locations--current'>
         <div className='locations__item'>
-          <a className='locations__item-link' href='#1'>
+          <Link
+            className='locations__item-link'
+            to=''
+            onClick={handleCityClick}
+          >
             <span>{cityName}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <div className='favorites__places'>

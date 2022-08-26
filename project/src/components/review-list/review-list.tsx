@@ -5,10 +5,16 @@ type PropsType = {
   reviews: ReviewType[];
 };
 
-export const ReviewList = ({ reviews }: PropsType) => (
-  <ul className='reviews__list'>
-    {reviews.map((review) => (
-      <Review key={review.id} review={review} />
-    ))}
-  </ul>
-);
+const REVIEWS_COUNT_MAX = 10;
+
+export const ReviewList = ({ reviews }: PropsType) => {
+  const list = reviews.slice().reverse();
+  return (
+    <ul className='reviews__list'>
+      {list.length &&
+        list
+          .slice(0, REVIEWS_COUNT_MAX)
+          .map((review) => <Review key={review.id} review={review} />)}
+    </ul>
+  );
+};

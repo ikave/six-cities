@@ -1,6 +1,6 @@
 import { SortType } from '../../constants';
 import { useAppDispatch } from '../../hooks';
-import { changeSortType, sortOffers } from '../../store/action';
+import { changeSortType } from '../../store/app-process/app-process';
 
 type PropsType = {
   sortActive: boolean;
@@ -21,8 +21,7 @@ export const SortOptions = ({ sortActive, setSortActive }: PropsType) => {
         tabIndex={0}
         onClick={() => {
           setSortActive(false);
-          dispatch(changeSortType({ sortType: SortType.Popular }));
-          dispatch(sortOffers());
+          dispatch(changeSortType(SortType.Popular));
         }}
       >
         {SortType.Popular}
@@ -32,8 +31,7 @@ export const SortOptions = ({ sortActive, setSortActive }: PropsType) => {
         tabIndex={0}
         onClick={() => {
           setSortActive(false);
-          dispatch(changeSortType({ sortType: SortType.PriceLowToHigh }));
-          dispatch(sortOffers());
+          dispatch(changeSortType(SortType.PriceLowToHigh));
         }}
       >
         Price: low to high
@@ -43,8 +41,7 @@ export const SortOptions = ({ sortActive, setSortActive }: PropsType) => {
         tabIndex={0}
         onClick={() => {
           setSortActive(false);
-          dispatch(changeSortType({ sortType: SortType.PriceHighToLow }));
-          dispatch(sortOffers());
+          dispatch(changeSortType(SortType.PriceHighToLow));
         }}
       >
         Price: high to low
@@ -54,8 +51,7 @@ export const SortOptions = ({ sortActive, setSortActive }: PropsType) => {
         tabIndex={0}
         onClick={() => {
           setSortActive(false);
-          dispatch(changeSortType({ sortType: SortType.TopRatedFirst }));
-          dispatch(sortOffers());
+          dispatch(changeSortType(SortType.TopRatedFirst));
         }}
       >
         Top rated first

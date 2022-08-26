@@ -1,23 +1,49 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { CommentProperty } from '../../constants';
+import { useAppDispatch } from '../../hooks';
+import { addOfferCommentAction } from '../../store/api-actions';
 
-const AddCommentForm = () => {
+type PropsType = {
+  id: number;
+};
+
+const AddCommentForm = ({ id }: PropsType) => {
   const [formData, setFormData] = useState({
-    rating: '',
+    rating: 0,
     comment: '',
   });
+  const dispatch = useAppDispatch();
 
-  const radioChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, rating: target.value });
+  const checkFormValidity = () => {
+    if (
+      formData.rating >= CommentProperty.RatingMin &&
+      formData.comment.length > CommentProperty.LengthMin &&
+      formData.comment.length < CommentProperty.LengthMax
+    ) {
+      return true;
+    }
+    return false;
   };
 
-  const textariaChangeHandler = ({
+  const handleInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, rating: Number(target.value) });
+  };
+
+  const handleTextariaChange = ({
     target,
   }: ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({ ...formData, comment: target.value });
   };
 
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(addOfferCommentAction({ id, ...formData }));
+    setFormData({ rating: 0, comment: '' });
+    evt.currentTarget.reset();
+  };
+
   return (
-    <form className='reviews__form form'>
+    <form className='reviews__form form' onSubmit={handleFormSubmit}>
       <label className='reviews__label form__label' htmlFor='review'>
         Your review
       </label>
@@ -28,7 +54,7 @@ const AddCommentForm = () => {
           value='5'
           id='5-stars'
           type='radio'
-          onChange={radioChangeHandler}
+          onChange={handleInputChange}
         />
         <label
           htmlFor='5-stars'
@@ -46,7 +72,7 @@ const AddCommentForm = () => {
           value='4'
           id='4-stars'
           type='radio'
-          onChange={radioChangeHandler}
+          onChange={handleInputChange}
         />
         <label
           htmlFor='4-stars'
@@ -64,7 +90,7 @@ const AddCommentForm = () => {
           value='3'
           id='3-stars'
           type='radio'
-          onChange={radioChangeHandler}
+          onChange={handleInputChange}
         />
         <label
           htmlFor='3-stars'
@@ -82,7 +108,7 @@ const AddCommentForm = () => {
           value='2'
           id='2-stars'
           type='radio'
-          onChange={radioChangeHandler}
+          onChange={handleInputChange}
         />
         <label
           htmlFor='2-stars'
@@ -100,7 +126,7 @@ const AddCommentForm = () => {
           value='1'
           id='1-star'
           type='radio'
-          onChange={radioChangeHandler}
+          onChange={handleInputChange}
         />
         <label
           htmlFor='1-star'
@@ -118,7 +144,9 @@ const AddCommentForm = () => {
         name='review'
         placeholder='Tell how was your stay, what you like and what can be improved'
         value={formData.comment}
-        onChange={textariaChangeHandler}
+        minLength={50}
+        maxLength={300}
+        onChange={handleTextariaChange}
       />
       <div className='reviews__button-wrapper'>
         <p className='reviews__help'>
@@ -129,7 +157,7 @@ const AddCommentForm = () => {
         <button
           className='reviews__submit form__submit button'
           type='submit'
-          disabled
+          disabled={!checkFormValidity()}
         >
           Submit
         </button>

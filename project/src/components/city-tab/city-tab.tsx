@@ -1,40 +1,42 @@
 import { MouseEvent } from 'react';
-import { Cities } from '../../constants';
+import { Link } from 'react-router-dom';
+import { City } from '../../constants';
 import { useAppDispatch } from '../../hooks';
-import { changeCurrentCity, getOffersByCity } from '../../store/action';
+import { setCurrentCity } from '../../store/app-process/app-process';
 
 type PropsType = {
-  cityName: Cities;
-  activeTab: Cities;
-  setActiveTab: (city: Cities) => void;
+  cityName: City;
+  activeTab: City;
+  setActiveTab: (city: City) => void;
 };
 
 export const CityTab = ({ cityName, activeTab, setActiveTab }: PropsType) => {
   const dispatch = useAppDispatch();
+
   const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     setActiveTab(cityName);
-    dispatch(changeCurrentCity({ currentCity: cityName }));
-    dispatch(getOffersByCity());
+    dispatch(setCurrentCity(cityName));
   };
+
   return (
     <li className='locations__item'>
       {cityName === activeTab ? (
-        <a
+        <Link
           className='locations__item-link tabs__item tabs__item--active'
-          href='/'
+          to='/'
           onClick={handleClick}
         >
           <span>{cityName}</span>
-        </a>
+        </Link>
       ) : (
-        <a
+        <Link
           className='locations__item-link tabs__item'
-          href='/'
+          to='/'
           onClick={handleClick}
         >
           <span>{cityName}</span>
-        </a>
+        </Link>
       )}
     </li>
   );

@@ -1,19 +1,26 @@
-import { Link } from 'react-router-dom';
+import { memo, useCallback, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import cn from 'classnames';
 import { capitalizeFirstLetter, convertRatingToWidth } from '../../helpers';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { changeOfferStatus } from '../../store/api-actions';
+import { getAuthStatus } from '../../store/user-data/selectors';
 import { CardClassType, OfferType } from '../../types';
+import { AppRoute, AuthStatus } from '../router/enums';
+import { ToggleFavoriteButton } from '../toggle-favorite-button';
 
 type PropsType = {
   offer: OfferType;
   setActiveCardId?: (id: number | null) => void;
   classes?: CardClassType;
-  activeCardId?: number | null;
+  className?: string;
 };
 
 const OfferCard = ({
   offer,
   setActiveCardId,
   classes,
-  activeCardId,
+  className,
 }: PropsType) => {
   const {
     type,
@@ -25,8 +32,24 @@ const OfferCard = ({
     title,
     previewImage,
   } = offer;
+  const [isAddedToFavorite, setIsAddedToFavorite] =
+    useState<boolean>(isFavorite);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const authStatus = useAppSelector(getAuthStatus);
   const offerType = capitalizeFirstLetter(type);
   const ratingWidth = convertRatingToWidth(rating);
+
+  const handleButtonClick = useCallback(() => {
+    if (authStatus === AuthStatus.Auth) {
+      dispatch(changeOfferStatus({ id, status: Number(!isAddedToFavorite) }));
+      setIsAddedToFavorite(!isAddedToFavorite);
+    } else {
+      navigate(AppRoute.Login);
+    }
+  }, [authStatus, dispatch, id, isAddedToFavorite, navigate]);
 
   const mouseEnterHandler = () => {
     if (setActiveCardId) {
@@ -40,21 +63,11 @@ const OfferCard = ({
     }
   };
 
-  const cardHoverStyle = () => {
-    let style = null;
-    if (activeCardId === id) {
-      style = { opacity: 0.6 };
-    } else {
-      style = { opacity: 1 };
-    }
-
-    return style;
-  };
+  const cardClasses = cn('place-card', className);
 
   return (
     <article
-      className={`place-card ${classes ? classes?.card : ''}`}
-      style={cardHoverStyle()}
+      className={cardClasses}
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
     >
@@ -85,17 +98,11 @@ const OfferCard = ({
             <b className='place-card__price-value'>&euro;{price}</b>
             <span className='place-card__price-text'>&#47;&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button button${
-              isFavorite ? ' place-card__bookmark-button--active' : ''
-            }`}
-            type='button'
-          >
-            <svg className='place-card__bookmark-icon' width='18' height='19'>
-              <use xlinkHref='#icon-bookmark'></use>
-            </svg>
-            <span className='visually-hidden'>To bookmarks</span>
-          </button>
+          <ToggleFavoriteButton
+            isFavorite={isFavorite}
+            onClick={handleButtonClick}
+            className='place-card__bookmark-button'
+          />
         </div>
         <div className='place-card__rating rating'>
           <div className='place-card__stars rating__stars'>
@@ -112,4 +119,4 @@ const OfferCard = ({
   );
 };
 
-export default OfferCard;
+export default memo(OfferCard);
