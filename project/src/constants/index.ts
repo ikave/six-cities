@@ -46,3 +46,16 @@ export enum SortType {
   PriceHighToLow = 'Price: high to low',
   TopRatedFirst = 'Top rated first',
 }
+
+export const OFFER_DETAILS_IMAGES_MAX = 6;
+
+export enum ToggleButtonSize {
+  Big = 'BIG',
+  Small = 'SMALL',
+}
+
+export const CommentProperty = {
+  RatingMin: 1,
+  LengthMin: 50,
+  LengthMax: 300,
+};
