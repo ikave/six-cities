@@ -1,90 +1,33 @@
-import { Header } from '../../components/header';
-import { OfferList } from '../../components/offer-list';
-import { Map } from '../../components/map';
-import { useEffect, useState } from 'react';
-import { CARD_CLASSES } from '../../constants';
+import { useEffect } from 'react';
+import cn from 'classnames';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { CityList } from '../../components/city-list';
-import { getOffersByCity, sortOffers } from '../../store/action';
-import { SortOptions } from '../../components/sort-options';
-import Spinner from '../../components/spinner';
+import { getSortedOffersByType } from '../../store/app-data/selectors';
+import { fetchOffersAction } from '../../store/api-actions';
+
+import { Header } from '../../components/header';
+import { CityTabs } from '../../components/city-tabs';
+import { Cities } from '../../components/cities';
 
 export const Main = () => {
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
-  const [sortActive, setSortActive] = useState(false);
   const dispatch = useAppDispatch();
+  const offers = useAppSelector(getSortedOffersByType);
 
-  const offers = useAppSelector((state) => state.sortedOffers);
-  const currentCity = useAppSelector((state) => state.currentCity);
-  const sortType = useAppSelector((state) => state.sortType);
-  const isLoading = useAppSelector((state) => state.isLoading);
-  const activeCity = useAppSelector((state) => state.currentCity);
-
-  const sortClickHandler = () => {
-    setSortActive(!sortActive);
-  };
+  const mainClasses = cn('page__main', 'page__main--index', {
+    'page__main--index-empty': !offers.length,
+  });
 
   useEffect(() => {
-    dispatch(getOffersByCity());
-    dispatch(sortOffers());
-  }, [dispatch, currentCity]);
+    dispatch(fetchOffersAction());
+  }, [dispatch]);
 
   return (
     <div className='page page--gray page--main'>
       <Header />
-      <main className='page__main page__main--index'>
+      <main className={mainClasses}>
         <h1 className='visually-hidden'>Cities</h1>
-        <div className='tabs'>
-          <CityList />
-        </div>
-        <div className='cities'>
-          <div className='cities__places-container container'>
-            <section className='cities__places places'>
-              <h2 className='visually-hidden'>Places</h2>
-              <b className='places__found'>
-                {offers.length} places to stay in {currentCity}
-              </b>
-              <form className='places__sorting' action='#' method='get'>
-                <span className='places__sorting-caption'>Sort by</span>
-                <span
-                  className='places__sorting-type'
-                  tabIndex={0}
-                  onClick={sortClickHandler}
-                >
-                  {sortType}
-                  <svg className='places__sorting-arrow' width='7' height='4'>
-                    <use xlinkHref='#icon-arrow-select'></use>
-                  </svg>
-                </span>
-                <SortOptions
-                  sortActive={sortActive}
-                  setSortActive={setSortActive}
-                />
-              </form>
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <OfferList
-                  className='cities__places-list'
-                  offersList={offers}
-                  setActiveCardId={setActiveCardId}
-                  cardClasses={CARD_CLASSES.cities}
-                  activeCardId={activeCardId}
-                />
-              )}
-            </section>
-            <div className='cities__right-section'>
-              <section className='cities__map map'>
-                <Map
-                  offers={offers}
-                  activeCardId={activeCardId}
-                  setActiveCardId={setActiveCardId}
-                  activeCity={activeCity}
-                />
-              </section>
-            </div>
-          </div>
-        </div>
+        <CityTabs />
+        <Cities />
       </main>
     </div>
   );
