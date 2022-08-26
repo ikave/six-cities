@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-
 import { Favorites } from '../../pages/favorites';
 import { Login } from '../../pages/login';
 import { Main } from '../../pages/main';
